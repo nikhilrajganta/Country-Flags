@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countries</title>
+    <link rel="stylesheet" href="design.css" />
+  </head>
+  <style>
+    body {
+      background-color: whitesmoke;
+      display: flex;
+      justify-content: center;
+      padding: 50px;
+      margin: 0;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-info {
+      padding: 15px;
+    }
+
+    .card-info h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .card-info p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .card-info strong {
+      font-weight: bold;
+    }
+  </style>
+  <body>
+    <script>
+      function fetchCountries() {
+        fetch("https://restcountries.com/v3.1/all")
+          .then((response) => response.json())
+          .then((countries) => {
+            const containerDiv = document.createElement("div");
+            containerDiv.className = "card-container";
+            document.body.append(containerDiv);
+
+            countries.forEach((country) => {
+              const name = country.name.common || "Unknown";
+              const population = country.population
+                ? country.population.toLocaleString()
+                : "N/A";
+              const region = country.region;
+              const flag =
+                country.flags.png ||
+                "https://via.placeholder.com/220?text=No+Flag";
+              const capital = country.capital ? country.capital[0] : "N/A";
+
+              containerDiv.innerHTML += `
+                <div class="card">
+                  <img src="${flag}" alt="${name} Flag" />
+                  <div class="card-info">
+                    <h3>${name}</h3>
+                    <p>
+                      <strong>Population:</strong> ${population}<br />
+                      <strong>Region:</strong> ${region}<br />
+                      <strong>Capital:</strong> ${capital}<br />
+                    </p>
+                  </div>
+                </div>`;
+            });
+          });
+      }
+
+      fetchCountries();
+    </script>
+  </body>
+</html>
